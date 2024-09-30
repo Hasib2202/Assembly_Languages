@@ -1,0 +1,71 @@
+.model small
+.stack 100h
+.data
+    msg1 db "Enter binary Input: $"
+    msg2 db "Binary Output: $"
+.code
+main proc
+    mov ax, @data      ; Initialize data segment
+    mov ds, ax
+    
+    ; Display input message
+    mov ah, 9
+    lea dx, msg1
+    int 21h
+    
+    ; Input binary number
+    xor bx, bx         ; Clear BX (will hold the binary number)
+    mov cx, 16         ; Expecting 16 bits
+    
+input_loop:
+    mov ah, 1          ; Read a character
+    int 21h
+    cmp al, 0Dh        ; Check for Enter key (Carriage return)
+    je output_display  ; If Enter is pressed, go to output
+
+    sub al, '0'        ; Convert ASCII to binary (0 or 1)
+    shl bx, 1          ; Shift BX left to make space for next bit
+    or bl, al          ; Store the input bit into BX
+    loop input_loop    ; Repeat until all bits are entered
+
+output_display:
+    ; Print newline
+    mov ah, 2
+    mov dl, 10         ; Newline character (LF)
+    int 21h
+    mov dl, 13         ; Carriage return (CR)
+    int 21h
+    
+    ; Display output message
+    mov ah, 9
+    lea dx, msg2
+    int 21h
+
+    ; Output the binary number stored in BX
+    mov cx, 16         ; 16 bits to output
+
+output_loop:
+    shl bx, 1          ; Shift BX left to bring MSB to carry flag
+    jc print_one       ; If carry flag is set, print '1'
+    
+    ; Print '0'
+    mov ah, 2
+    mov dl, '0'
+    int 21h
+    loop output_loop   ; Repeat for all 16 bits
+    jmp done
+    
+print_one:
+    ; Print '1'
+    mov ah, 2
+    mov dl, '1'
+    int 21h
+    loop output_loop   ; Repeat for all 16 bits
+
+done:
+    ; Program end
+    mov ah, 4ch
+    int 21h
+
+main endp
+end main
