@@ -1,0 +1,313 @@
+practice
+
+1.
+.model small
+.stack 100h
+.data
+.code
+
+main proc
+    
+    mov ah,1
+    int 21h
+    
+    mov bl,al
+    
+    mov ah,2
+    mov dl,10
+    int 21h
+    mov dl,13
+    int 21h
+    
+    mov ah,2
+    mov dl,bl
+    int 21h
+    
+    mov ah,4ch
+    int 21h
+    
+    main endp
+end main
+
+
+2.
+.model small
+.stack 100h
+.data
+.code
+
+main proc
+    
+    mov ah,2
+    mov dl,'?'
+    int 21h
+    
+    mov ah,1
+    int 21h
+    
+    mov bl,al
+    
+    mov ah,2
+    mov dl,10
+    int 21h
+    mov dl,13
+    int 21h
+    
+    mov ah,2
+    mov dl,bl
+    int 21h
+    
+    mov ah,4ch
+    int 21h
+    
+    main endp
+end main
+3.
+.model small
+.stack 100h
+.data
+m1 db "Hello $"
+.code
+
+main proc
+    
+    mov ax,@data
+    mov ds,ax
+    
+    mov ah,9
+    lea dx,m1
+    int 21h
+    
+    
+    mov ah,4ch
+    int 21h
+    
+    main endp
+end main
+4.
+.model small
+.stack 100h
+.data
+m1 db "ENTER A LOWER CASE LETTER: $"
+m2 db 10,13, "IN UPPERCASE IT IS: $"
+
+.code
+
+main proc
+    
+    mov ax,@data
+    mov ds,ax
+    
+    mov ah,9
+    lea dx,m1
+    int 21h
+    
+    mov ah,1
+    int 21h
+    
+    mov bl,al
+    
+    cmp bl,'A'
+    jb upper
+    cmp bl,'Z'
+    ja upper
+    add bl,20h
+    
+    upper:
+    mov ah,9
+    lea dx,m2
+    int 21h
+    
+    mov ah,2
+    mov dl,bl
+    int 21h
+    
+    
+    mov ah,4ch
+    int 21h
+    
+    main endp
+end main
+
+
+
+lab1.
+
+.model small
+.stack 100h
+.data
+m1 db "HELLO WORLD $"
+
+
+.code
+
+main proc
+    
+    mov ax,@data
+    mov ds,ax
+    
+    again:
+    mov ah,9
+    lea dx,m1
+    int 21h
+    
+    mov ah,2
+    mov dl,10
+    int 21h
+    mov dl,13
+    int 21h
+    
+    jmp again
+    
+    mov ah,4ch
+    int 21h
+    
+    main endp
+end main
+
+lab2.
+.model small
+.stack 100h
+.data
+m1 db "HELLO WORLD $"
+m2 db "bye $"
+
+.code
+
+main proc
+    
+    mov ax,@data
+    mov ds,ax
+    
+    mov bl,10
+    
+    
+    again:
+    dec bl
+    mov ah,9
+    lea dx,m1
+    int 21h
+    
+    mov ah,2
+    mov dl,10
+    int 21h
+    mov dl,13
+    int 21h
+    
+    cmp bl,0
+    jg again
+    
+    mov ah,9
+    lea dx,m2
+    int 21h
+  
+    mov ah,4ch
+    int 21h
+    
+    main endp
+end main
+
+lab3.
+.model small
+.stack 100h
+.data
+m1 db "Enter a number: $"
+m2 db 10,13,"Positive $"
+m3 db 10,13,"Negative $"
+
+.code
+
+main proc
+    
+    mov ax,@data
+    mov ds,ax
+    
+    mov ah,9
+    lea dx,m1
+    int 21h
+    
+    mov ah,1
+    int 21h
+    
+    mov bl,al
+    
+    cmp bl,'0'
+    jg positive
+    jl negative
+    
+    positive: 
+    mov ah,9
+    lea dx,m2
+    int 21h
+    jmp end
+    
+    negative:
+    mov ah,1
+    int 21h
+    
+    mov ah,9
+    lea dx,m3
+    int 21h
+    
+    end:
+    mov ah,4ch
+    int 21h
+    
+    main endp
+end main
+5.
+.model small
+.stack 100h
+.data
+m1 db "Enter a character: $"
+.code
+
+main proc
+    
+    mov ax,@data
+    mov ds,ax
+    
+    mov ah,9
+    lea dx,m1
+    int 21h 
+    
+    mov cx,5
+    
+    mov ah,1
+    int 21h
+    
+    mov bl,al
+    
+    mov ah,2
+    mov dl,10
+    int 21h
+    mov dl,13
+    int 21h
+    
+    again:
+    mov ah,2
+    mov dl,bl
+    int 21h
+    
+    dec cx
+    cmp cx,0
+    jnz again:
+    jmp end
+    
+    end:
+    mov ah,4ch
+    int 21h
+    
+    main endp
+end main
+       
+       
+       F=(M+N)-(I+J)
+       
+       MOV AX,M
+       ADD AX,N
+
+       SUB AX,I
+       SUB AX,J
+       
+       MOV F,AX 
