@@ -1,0 +1,56 @@
+.model small
+.stack 100h
+.data
+a db 10,13, 'for and $'
+b db 10,13, 'for or $'
+c db 10,13, 'for xor $'
+.code    ;code sigment
+main proc
+    mov ax,@data ;data sigment
+    mov ds,ax
+            ;AND effective
+    mov ah,9
+    lea dx,a
+    int 21h
+
+    mov bl,111b  ;First operand-1 111b keep in bl register
+    and bl,101b  ;Operand-2 value 101b as source keep in bl register  
+    add bl,48 ;add 48 for the ASCII code
+    
+    mov ah,2
+    mov dl,bl ;bl print in the dl register
+    int 21h
+         ;create another level or1
+or1:
+    mov ah,9
+    lea dx,b
+    int 21h
+      ;or operator can be set for one or more bits
+    mov bl,101b ;101b keep into bl register
+    or bl,101b  ;one more bits we can use or operand to store in bl register
+     
+    add bl,48 ;add 48 for the ASCII code   
+    
+    mov ah,2 ; Printing function 
+    mov dl,bl 
+    int 21h  ;Calling function 21h
+
+xor1:    
+    ;0 xor 0 = 0
+    ;1 xor 1 = 0
+    mov ah,9
+    lea dx,c
+    int 21h
+
+    mov bl,111b 
+    xor bl,100b
+    add bl,48 
+    mov ah,2 
+    mov dl,bl 
+    int 21h 
+
+    exit:
+    mov ah,4ch
+    int 21h
+    main endp
+end main
